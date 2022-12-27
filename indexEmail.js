@@ -2,8 +2,10 @@ require("dotenv").config()
 const nodemailer = require("nodemailer")
 const http = require("http")
 const express = require("express")
+const crypto = require('crypto')
 const app = express()
 const server = http.createServer(app)
+let code = crypto.randomBytes(10).toString('hex');
 server.listen(3000, () => {
     console.log("Server started on port 3000")
 })
@@ -26,7 +28,9 @@ const sendEmail = (email, name) => {
         from: process.env.EMAIL,
         to: email,
         subject: `Hi ${name}`,
-        html: "<h1>I really wanna appreciate you</h1> <p>See èm soon</p>"
+        html: `<h1>This is your confirmation code ${code}</h1>
+        <p>Support team</p>
+        `
     }
 
     transporter.sendMail(mailOptions, (error, info) => {
