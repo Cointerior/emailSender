@@ -1,0 +1,55 @@
+openapi: 3.0.0
+info:
+  title: Email
+  contact: {}
+  version: '1.0'
+servers:
+- url: https://email-service.cyclic.app/
+  variables: {}
+paths:
+  /:
+    post:
+      tags:
+      - Email
+      summary: Recieve code
+      operationId: NewRequest
+      parameters: []
+      requestBody:
+        description: ''
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/NewRequestRequest'
+              - example:
+                  recipientEmail: ijaolaomoniyi001@gmail.com
+                  name: Andre
+            example:
+              recipientEmail: ijaolaomoniyi001@gmail.com
+              name: Andre
+        required: true
+      responses:
+        '200':
+          description: ''
+          headers: {}
+      deprecated: false
+      security: []
+components:
+  schemas:
+    NewRequestRequest:
+      title: NewRequestRequest
+      required:
+      - recipientEmail
+      - name
+      type: object
+      properties:
+        recipientEmail:
+          type: string
+        name:
+          type: string
+      example:
+        recipientEmail: ijaolaomoniyi001@gmail.com
+        name: Andre
+tags:
+- name: Email
+  description: ''

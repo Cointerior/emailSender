@@ -10,6 +10,11 @@ const mongoose = require("mongoose")
 const app = express()
 // const server = http.createServer(app)
 const code = crypto.randomBytes(3).toString('hex');
+const swaggerUI = require("swagger-ui-express")
+const YAML = require("yamljs")
+
+
+const swaggerDocument = YAML.load("./swagger.yaml")
 
 connectDB()
 
@@ -31,7 +36,7 @@ const sendEmail = (email, name, res) => {
         to: email,
         subject: `Hi ${name}`,
         html: `<h1>This is your confirmation code ${code.toUpperCase()}</h1>
-        <p>Support team</p>
+        <p>Support Team</p>
         `
     }
 
@@ -57,6 +62,16 @@ app.post("/", (req, res) => {
     }
     sendEmail(recipientEmail, name, res)
 })
+
+app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument))
+
+app.get("/", (req, res) => {
+    // app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument))
+    // redirect("/api-docs")
+    res.redirect("/api-docs")
+})
+
+// app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument))
 
 mongoose.connection.once("open", () => {
   console.log("Connected to Database")
